@@ -1,0 +1,157 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" style="color:white;">livre Manager</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+  <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarColor02">
+     <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+           <a class="nav-link" (click)="onOpenModal(null,'add')"   data-toggle="modal" data-target="#exampleModal">Add livre <span class="sr-only">(current)</span></a>
+        </li>
+     </ul>
+     <form class="form-inline my-2 my-lg-0">
+        <input type="search" (ngModelChange)="searchLivres(key.value)" #key="ngModel" ngModel
+         name="key" id="searchName" class="form-control mr-sm-2" placeholder="Search livre..." required>
+     </form>
+  </div>
+</nav>
+
+
+<div class="container" id="main-container">
+<div class="row">
+  <div *ngFor="let livre of livres" class="col-md-6 col-xl-3">
+     <div class="card m-b-30">
+        <div class="card-body row">
+           <div class="col-6">
+              <a href=""><img src="{{livre?.imageUrl}}" class="img-fluid rounded-circle w-60"></a>
+           </div>
+           <div class="col-6 card-title align-self-center mb-0">
+              <h5>{{livre?.titre}}</h5>
+              <p class="m-0">{{livre?.auteur}}</p>
+           </div>
+
+        </div>
+        <ul class = "list-group list-group-flush">
+          <li class="list-group-item"> <i class="fa fa-envelope float-right"></i>
+             {{livre.auteur}}
+          </li>
+
+
+        </ul>
+        
+        <div class="card-body">
+           <div class="float-right btn-group btn-group-sm">
+             <a (click)="onOpenModal(livre, 'edit')" class="btn btn-primary tooltips" data-placement="top" data-original-title="Edit"><i class="fa fa-pencil"></i> </a>
+              <a (click)="onOpenModal(livre, 'delete')" class="btn btn-secondary tooltips" data-placement="top" data-original-title="Delete"><i class="fa fa-times"></i></a> 
+           </div>
+        </div>
+     </div>
+  </div>
+</div>
+
+<!-- Add Employee Modal -->
+<div class="modal fade" id="addlivreModal" tabindex="-1" role="dialog" aria-labelledby="addEmployeeModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+       <div class="modal-header">
+          <h5 class="modal-title" id="addEmployeeModalLabel">Add Livre</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          </button>
+       </div>
+       <div class="modal-body">
+         <form #addForm="ngForm" (ngSubmit)="onAddLivre(addForm)">
+          
+          <div class="form-group">
+             <label for="titre">titre</label>
+             <input type="text" ngModel name="titre" class="form-control" id="titre" placeholder="titre" required>
+          </div>
+          <div class="form-group">
+             <label for="auteur">auteur</label>
+             <input type="auteur" ngModel name="auteur" class="form-control" id="auteur" placeholder="auteur" required>
+          </div>
+         
+          <div class="form-group">
+             <label for="phone">Image URL</label>
+             <input type="text" ngModel name="imageUrl" class="form-control" id="imageUrl" placeholder="Image URL" required>
+          </div>
+          <div class="modal-footer">
+             <button type="button" id="add-livre-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary" >Save changes</button>
+          </div>
+          </form>
+       </div>
+    </div>
+  </div>
+  </div>
+
+
+
+
+<!-- Edit Modal -->
+<div class="modal fade" id="updatelivreModal" tabindex="-1" role="dialog" aria-labelledby="employeeEditModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+     <div class="modal-content">
+        <div class="modal-header">
+         <h5 class="modal-title"id="updatelivreModal"> Edit livre {{UpdateLivre?.titre}} </h5>
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+           </button>
+        </div>
+        <div class="modal-body">
+           <form #editForm="ngForm">
+              <div class="form-group">
+                 <label for="titre">Titre</label>
+               <input type="text" ngModel="{{UpdateLivre?.titre}}" name="titre" class="form-control" id="titre" aria-describedby="titre   " placeholder="titre">
+              </div>
+              <input type="hidden" ngModel="{{UpdateLivre?.id}}" name="id" class="form-control" id="id" placeholder="ID">
+              <div class="form-group">
+                 <label for="auteur"> auteur </label>
+                 <input type="email" ngModel="{{UpdateLivre?.auteur}}" name="auteur" class="form-control" id="auteur" placeholder="auteur">
+              </div>
+             
+            
+              <div class="form-group">
+                 <label for="imageUrl">Image URL</label>
+                 <input type="text" ngModel="{{UpdateLivre?.imageUrl}}" name="imageUrl" class="form-control" id="imageUrl" placeholder="Image URL">
+              </div>
+              <div class="modal-footer">
+                 <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">Close</button>
+                 <button (click)="OnUpdate_livre(editForm.value)" data-dismiss="modal" class="btn btn-primary" >Save changes</button>
+              </div>
+           </form>
+        </div>
+     </div>
+  </div>
+</div>
+<!-- Delete Modal -->
+
+<div class="modal fade" id="deletelivreModal" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+     <div class="modal-content">
+        <div class="modal-header">
+           <h5 class="modal-title" id="deleteModelLabel">Delete Employee</h5>
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+           </button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to delete livre {{deleteLivre?.titre}}?</p>
+           <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+              <button (click)="onDelete(deleteLivre.id)" class="btn btn-danger" data-dismiss="modal">Yes</button>
+           </div>
+        </div>
+     </div>
+  </div>
+</div>
+</div>
+
+
+<!-- Notification for no employees -->
+<div  *ngIf="livres?.length == 0" class="col-lg-12 col-md-12 col-xl-12">
+<div class="alert alert-info" role="alert">
+  <h4 class="alert-heading">NO livres!</h4>
+  <p>No livres were found.</p>
+</div>
+</div>
